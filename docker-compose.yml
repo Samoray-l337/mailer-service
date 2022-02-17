@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  mailer-service:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      REDIS_CONNECTION_URI: "redis://redis:6379"
+      USE_AUTH: "true"
+      MAIL_HOSTS: smtp.ethereal.email,smtp.ethereal.email
+      MAIL_USER: evans.friesen@ethereal.email
+      MAIL_PASS: vm7sMQSEGhkCXZK2gQ
+    restart: on-failure
+    ports:
+      - "8000:8000"
